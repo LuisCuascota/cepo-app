@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
-import { getEntryOptionList } from "../../../../../store/thunks/Entry/entry.thunks";
 import { FetchStateEnum } from "../../../../../shared/enums/fetchState.enum";
 import { EntryOption } from "../../../../../store/interfaces/Entry/entry.interfaces";
 import { setOptionsValue } from "../../../../../store/actions/Entry/entry.actions";
@@ -28,10 +27,6 @@ export const useEntryDetailState = () => {
 
     dispatch(setOptionsValue(updatedOptions));
   };
-
-  useEffect(() => {
-    dispatch(getEntryOptionList());
-  }, []);
 
   useEffect(() => {
     if (getOptionsStatus === FetchStateEnum.SUCCESS) setEntryOptions(options);

@@ -3,7 +3,10 @@ import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { FetchStateEnum } from "../../../../../shared/enums/fetchState.enum";
 import { PersonData } from "../../../../../store/interfaces/Entry/person.interfaces";
 import { getPersonList } from "../../../../../store/thunks/Person/person.thunks";
-import { getEntryCount } from "../../../../../store/thunks/Entry/entry.thunks";
+import {
+  getEntryCount,
+  getEntryOptionList,
+} from "../../../../../store/thunks/Entry/entry.thunks";
 import { HeaderState, SelectorPerson } from "./useEntryHeaderState.interfaces";
 import {
   setNewEntryAccount,
@@ -43,7 +46,10 @@ export const useEntryHeaderState = (): HeaderState => {
     _event: SyntheticEvent,
     value: SelectorPerson | null
   ) => {
-    if (value) dispatch(setNewEntryAccount(value.id));
+    if (value) {
+      dispatch(getEntryOptionList(value.id));
+      dispatch(setNewEntryAccount(value.id));
+    }
   };
 
   useEffect(() => {

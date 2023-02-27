@@ -3,15 +3,16 @@ import { Routes } from "../../../shared/api/routes";
 import {
   EntryCount,
   EntryOption,
-  NewEntry,
-  NewEntryDetail,
+  NewEntryComplete,
 } from "../../interfaces/Entry/entry.interfaces";
 import axios from "../../../shared/api/axios-util";
 
-export const getEntryOptionList = createAsyncThunk<EntryOption[]>(
+export const getEntryOptionList = createAsyncThunk<EntryOption[], number>(
   "entry/option",
-  async () => {
-    const response = await axios.get(Routes.GET_ENTRY_OPTION_LIST);
+  async (account: number) => {
+    const response = await axios.get(
+      `${Routes.GET_ENTRY_OPTION_LIST}/${account}`
+    );
 
     return response.data;
   }
@@ -26,19 +27,10 @@ export const getEntryCount = createAsyncThunk<EntryCount>(
   }
 );
 
-export const postNewEntry = createAsyncThunk<string, NewEntry>(
+export const postNewEntry = createAsyncThunk<string, NewEntryComplete>(
   "entry/new",
-  async (payload: NewEntry) => {
+  async (payload: NewEntryComplete) => {
     const response = await axios.post(Routes.POST_NEW_ENTRY, payload);
-
-    return response.data;
-  }
-);
-
-export const postNewEntryDetails = createAsyncThunk<string, NewEntryDetail[]>(
-  "entry/detail",
-  async (payload: NewEntryDetail[]) => {
-    const response = await axios.post(Routes.POST_NEW_ENTRY_DETAIL, payload);
 
     return response.data;
   }

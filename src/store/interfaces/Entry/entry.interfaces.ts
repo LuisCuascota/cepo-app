@@ -25,6 +25,11 @@ export interface NewEntryDetail {
   value: number;
 }
 
+export interface NewEntryComplete {
+  header: NewEntry;
+  detail: NewEntryDetail[];
+}
+
 export interface EntryState {
   options: EntryOption[];
   getOptionsStatus: FetchStateEnum;
@@ -32,5 +37,4 @@ export interface EntryState {
   getEntryCountStatus: FetchStateEnum;
   newEntry: NewEntry;
   postNewEntryStatus: FetchStateEnum;
-  postNewEntryDetailsStatus: FetchStateEnum;
 }
