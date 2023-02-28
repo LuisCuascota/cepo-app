@@ -30,7 +30,7 @@ export const useEntryDetailState = () => {
 
   useEffect(() => {
     if (getOptionsStatus === FetchStateEnum.SUCCESS) setEntryOptions(options);
-  }, [getOptionsStatus]);
+  }, [options]);
 
   return {
     entryOptions,

@@ -19,7 +19,7 @@ export const EntryItem = (props: EntryItemProps) => {
         sx={EntryItemStyles.input}
         type={"number"}
         size={"small"}
-        defaultValue={props.option.value}
+        value={props.option.value}
         onChange={props.onItemChange}
       />
     </Box>
