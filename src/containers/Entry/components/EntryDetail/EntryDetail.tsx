@@ -11,8 +11,7 @@ export const EntryDetail = () => {
       {entryOptions.map((option: EntryOption) => (
         <EntryItem
           key={option.id}
-          code={option.id}
-          description={option.description}
+          option={option}
           onItemChange={onItemChange}
         />
       ))}

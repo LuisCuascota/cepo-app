@@ -1,14 +1,15 @@
 import React from "react";
-import { Container } from "@mui/material";
 import { EntryContainer } from "./containers/Entry/Entry";
+import { Route, Routes } from "react-router-dom";
+import { RoutesEnum } from "./shared/enums/routes.enum";
+import { SimulatorContainer } from "./containers/Simulator/Simulator";
 
 function App() {
   return (
-    <div className="App">
-      <Container fixed>
-        <EntryContainer />
-      </Container>
-    </div>
+    <Routes>
+      <Route path={RoutesEnum.ENTRY} element={<EntryContainer />} />
+      <Route path={RoutesEnum.SIMULATOR} element={<SimulatorContainer />} />
+    </Routes>
   );
 }
 

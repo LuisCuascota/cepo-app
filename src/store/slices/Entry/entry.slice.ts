@@ -7,7 +7,6 @@ import {
   getEntryCount,
   getEntryOptionList,
   postNewEntry,
-  postNewEntryDetails,
 } from "../../thunks/Entry/entry.thunks";
 import { FetchStateEnum } from "../../../shared/enums/fetchState.enum";
 import moment from "moment";
@@ -25,7 +24,6 @@ export const initialState: EntryState = {
     place: "Loreto",
   },
   options: [],
-  postNewEntryDetailsStatus: FetchStateEnum.PENDING,
   postNewEntryStatus: FetchStateEnum.PENDING,
 };
 
@@ -59,15 +57,6 @@ export const entrySlice = createSlice({
     });
     builder.addCase(postNewEntry.rejected, (state) => {
       state.postNewEntryStatus = FetchStateEnum.FAILED;
-    });
-    builder.addCase(postNewEntryDetails.pending, (state: EntryState) => {
-      state.postNewEntryDetailsStatus = FetchStateEnum.PENDING;
-    });
-    builder.addCase(postNewEntryDetails.fulfilled, (state) => {
-      state.postNewEntryDetailsStatus = FetchStateEnum.SUCCESS;
-    });
-    builder.addCase(postNewEntryDetails.rejected, (state) => {
-      state.postNewEntryDetailsStatus = FetchStateEnum.FAILED;
     });
   },
   initialState,
