@@ -3,7 +3,7 @@ import moment, { Moment } from "moment";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import { NewEntryDetail } from "../../../../../store/interfaces/Entry/entry.interfaces";
 import { setNewEntryAmount } from "../../../../../store/actions/Entry/entry.actions";
-import { postNewEntry } from "../../../../../store/thunks/Entry/entry.thunks";
+//import { postNewEntry } from "../../../../../store/thunks/Entry/entry.thunks";
 import { FetchStateEnum } from "../../../../../shared/enums/fetchState.enum";
 
 export const useEntryFooterState = () => {
@@ -12,11 +12,11 @@ export const useEntryFooterState = () => {
   const [totalValue, setTotalValue] = useState<number>(0);
   const [saveIsLoad, setSaveIsLoad] = useState<boolean>(false);
 
-  const { options, newEntry, count, postNewEntryStatus } = useAppSelector(
-    (state) => ({
+  const { options, newEntry, count, postNewEntryStatus, feeLoanToPay } =
+    useAppSelector((state) => ({
       ...state.entry,
-    })
-  );
+      ...state.loan,
+    }));
 
   const onSave = () => {
     setSaveIsLoad(true);
@@ -28,8 +28,8 @@ export const useEntryFooterState = () => {
         value: option.value,
       }));
 
-    dispatch(postNewEntry({ detail: newEntryDetail, header: newEntry }));
-    console.log(newEntry, newEntryDetail);
+    //dispatch(postNewEntry({ detail: newEntryDetail, header: newEntry }));
+    console.log(newEntry, newEntryDetail, feeLoanToPay);
   };
 
   useEffect(() => {

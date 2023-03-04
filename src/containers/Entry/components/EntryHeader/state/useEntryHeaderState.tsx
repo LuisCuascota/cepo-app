@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { FetchStateEnum } from "../../../../../shared/enums/fetchState.enum";
-import { PersonData } from "../../../../../store/interfaces/Entry/person.interfaces";
+import { PersonData } from "../../../../../store/interfaces/Person/person.interfaces";
 import { getPersonList } from "../../../../../store/thunks/Person/person.thunks";
 import {
   getEntryCount,

@@ -1,11 +1,14 @@
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, IconButton, TextField, Typography } from "@mui/material";
 import { EntryItemStyles } from "./EntryItem.styles";
 import { ChangeEvent } from "react";
 import { EntryOption } from "../../../../store/interfaces/Entry/entry.interfaces";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { EntryTypeEnum } from "../../../../shared/enums/entryType.enum";
 
 export interface EntryItemProps {
   option: EntryOption;
   onItemChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onVisualisation: (type: EntryTypeEnum) => void;
 }
 
 export const EntryItem = (props: EntryItemProps) => {
@@ -14,14 +17,29 @@ export const EntryItem = (props: EntryItemProps) => {
       <Typography sx={EntryItemStyles.text} key={props.option.id}>
         {props.option.description}
       </Typography>
-      <TextField
-        id={props.option.id.toString()}
-        sx={EntryItemStyles.input}
-        type={"number"}
-        size={"small"}
-        value={props.option.value}
-        onChange={props.onItemChange}
-      />
+      <Box display={"flex"}>
+        <TextField
+          id={props.option.id.toString()}
+          sx={EntryItemStyles.input}
+          type={"number"}
+          size={"small"}
+          value={props.option.value}
+          onChange={props.onItemChange}
+        />
+        <IconButton
+          color="primary"
+          aria-label={"Detalle de Préstamo"}
+          disabled={
+            !(
+              props.option.id == EntryTypeEnum.loanFee &&
+              props.option.value != 0
+            )
+          }
+          onClick={() => props.onVisualisation(props.option.id)}
+        >
+          <VisibilityIcon />
+        </IconButton>
+      </Box>
     </Box>
   );
 };

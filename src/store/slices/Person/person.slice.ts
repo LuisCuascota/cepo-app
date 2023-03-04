@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { FetchStateEnum } from "../../../shared/enums/fetchState.enum";
-import { PersonState } from "../../interfaces/Entry/person.interfaces";
+import { PersonState } from "../../interfaces/Person/person.interfaces";
 import { getPersonList } from "../../thunks/Person/person.thunks";
 
 export const initialState: PersonState = {
