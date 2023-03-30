@@ -18,6 +18,7 @@ export const useEntryDetailState = () => {
       (option: EntryOption) => ({
         description: option.description,
         id: option.id,
+        showDetails: option.showDetails,
         value:
           option.id.toString() === event.target.id
             ? +event.target.value

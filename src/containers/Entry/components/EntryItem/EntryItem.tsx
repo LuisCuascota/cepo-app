@@ -29,12 +29,7 @@ export const EntryItem = (props: EntryItemProps) => {
         <IconButton
           color="primary"
           aria-label={"Detalle de Préstamo"}
-          disabled={
-            !(
-              props.option.id == EntryTypeEnum.loanFee &&
-              props.option.value != 0
-            )
-          }
+          disabled={!props.option.showDetails}
           onClick={() => props.onVisualisation(props.option.id)}
         >
           <VisibilityIcon />

@@ -1,9 +1,11 @@
 import { FetchStateEnum } from "../../../shared/enums/fetchState.enum";
+import { FeeLoanToPay, LoanToPay } from "../Loan/loan.interfaces";
 
 export interface EntryOption {
   id: number;
   description: string;
   value: number;
+  showDetails: boolean;
 }
 
 export interface EntryCount {
@@ -28,6 +30,7 @@ export interface NewEntryDetail {
 export interface NewEntryComplete {
   header: NewEntry;
   detail: NewEntryDetail[];
+  loanToPay?: LoanToPay;
 }
 
 export interface EntryState {

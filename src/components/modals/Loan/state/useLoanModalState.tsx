@@ -60,12 +60,14 @@ export const useLoanModalState = (props: LoanModalProps) => {
           return {
             description: option.description,
             id: option.id,
+            showDetails: option.showDetails,
             value: totalFee,
           };
         case EntryTypeEnum.loanInterest:
           return {
             description: option.description,
             id: option.id,
+            showDetails: option.showDetails,
             value: totalInterest,
           };
         default:

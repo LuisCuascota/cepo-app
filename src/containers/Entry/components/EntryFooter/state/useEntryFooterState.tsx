@@ -2,9 +2,16 @@ import { useEffect, useState } from "react";
 import moment, { Moment } from "moment";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import { NewEntryDetail } from "../../../../../store/interfaces/Entry/entry.interfaces";
-import { setNewEntryAmount } from "../../../../../store/actions/Entry/entry.actions";
-//import { postNewEntry } from "../../../../../store/thunks/Entry/entry.thunks";
+import {
+  setNewEntryAmount,
+  setOptionsValue,
+} from "../../../../../store/actions/Entry/entry.actions";
+import {
+  getEntryCount,
+  postNewEntry,
+} from "../../../../../store/thunks/Entry/entry.thunks";
 import { FetchStateEnum } from "../../../../../shared/enums/fetchState.enum";
+import { LoanToPay } from "../../../../../store/interfaces/Loan/loan.interfaces";
 
 export const useEntryFooterState = () => {
   const dispatch = useAppDispatch();
@@ -12,11 +19,17 @@ export const useEntryFooterState = () => {
   const [totalValue, setTotalValue] = useState<number>(0);
   const [saveIsLoad, setSaveIsLoad] = useState<boolean>(false);
 
-  const { options, newEntry, count, postNewEntryStatus, feeLoanToPay } =
-    useAppSelector((state) => ({
-      ...state.entry,
-      ...state.loan,
-    }));
+  const {
+    options,
+    newEntry,
+    count,
+    postNewEntryStatus,
+    feeLoanToPay,
+    loanData,
+  } = useAppSelector((state) => ({
+    ...state.entry,
+    ...state.loan,
+  }));
 
   const onSave = () => {
     setSaveIsLoad(true);
@@ -28,7 +41,23 @@ export const useEntryFooterState = () => {
         value: option.value,
       }));
 
-    //dispatch(postNewEntry({ detail: newEntryDetail, header: newEntry }));
+    let loanToPay: LoanToPay | undefined;
+
+    if (loanData) {
+      loanToPay = {
+        feeToPay: feeLoanToPay,
+        loanNumber: loanData.loan.number,
+        term: loanData.loan.term,
+      };
+    }
+
+    dispatch(
+      postNewEntry({
+        detail: newEntryDetail,
+        header: newEntry,
+        loanToPay,
+      })
+    );
     console.log(newEntry, newEntryDetail, feeLoanToPay);
   };
 
@@ -44,7 +73,11 @@ export const useEntryFooterState = () => {
   }, [options]);
 
   useEffect(() => {
-    if (postNewEntryStatus === FetchStateEnum.SUCCESS) setSaveIsLoad(false);
+    if (postNewEntryStatus === FetchStateEnum.SUCCESS) {
+      dispatch(getEntryCount());
+      dispatch(setOptionsValue([]));
+      setSaveIsLoad(false);
+    }
   }, [postNewEntryStatus]);
 
   return {

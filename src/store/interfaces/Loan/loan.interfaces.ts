@@ -32,6 +32,12 @@ export interface FeeLoanToPay {
   entry: number;
 }
 
+export interface LoanToPay {
+  feeToPay: FeeLoanToPay[];
+  loanNumber: number;
+  term: number;
+}
+
 export interface LoanState {
   loanData: LoanResponse | undefined;
   getLoanStatus: FetchStateEnum;
