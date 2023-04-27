@@ -18,14 +18,12 @@ import { useLoanModalState } from "./state/useLoanModalState";
 import { LoanDetail } from "../../../store/interfaces/Loan/loan.interfaces";
 import moment from "moment";
 import { PayButton } from "./components/PayButton";
-
-export interface LoanModalProps {
-  open: boolean;
-  handleClose: () => void;
-}
+import { LoanModalProps } from "./state/useLoanModalState.interfaces";
+import { LoanModalStyles } from "./LoanModal.styles";
 
 export const LoanModal = (props: LoanModalProps) => {
-  const { loan, onPayButton, onClose, onSave } = useLoanModalState(props);
+  const { loan, onPayButton, onClose, onSave, getRowStyle } =
+    useLoanModalState(props);
 
   return (
     <Dialog maxWidth={"xl"} open={props.open} onClose={onClose}>
@@ -62,7 +60,10 @@ export const LoanModal = (props: LoanModalProps) => {
             </TableHead>
             <TableBody>
               {loan?.detail.map((loanDetail: LoanDetail) => (
-                <TableRow key={loanDetail.fee_number}>
+                <TableRow
+                  key={loanDetail.fee_number}
+                  sx={getRowStyle(loanDetail)}
+                >
                   <TableCell>{loanDetail.fee_number}</TableCell>
                   <TableCell>
                     {moment(loanDetail.payment_date)

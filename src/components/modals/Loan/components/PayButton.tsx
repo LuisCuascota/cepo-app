@@ -17,7 +17,7 @@ export const PayButton = (props: PayButtonProps) => {
   return (
     <Button
       disabled={disable}
-      color="secondary"
+      color="info"
       size={"small"}
       variant={"contained"}
       onClick={() => {

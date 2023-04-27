@@ -7,12 +7,19 @@ import {
   LoanDetail,
   LoanResponse,
 } from "../../../../store/interfaces/Loan/loan.interfaces";
-import { LoanModalProps } from "../LoanModal";
 import { EntryTypeEnum } from "../../../../shared/enums/entryType.enum";
 import { setOptionsValue } from "../../../../store/actions/Entry/entry.actions";
 import { setFeeLoanToPay } from "../../../../store/actions/Loan/loan.actions";
+import {
+  LoanModalProps,
+  useLoanModalStateProps,
+} from "./useLoanModalState.interfaces";
+import moment from "moment";
+import { LoanModalStyles } from "../LoanModal.styles";
 
-export const useLoanModalState = (props: LoanModalProps) => {
+export const useLoanModalState = (
+  props: LoanModalProps
+): useLoanModalStateProps => {
   const dispatch = useAppDispatch();
   const [loan, setLoan] = useState<LoanResponse>();
   const [detailSelected, setDetailSelected] = useState<LoanDetail[]>([]);
@@ -81,6 +88,17 @@ export const useLoanModalState = (props: LoanModalProps) => {
     props.handleClose();
   };
 
+  const getRowStyle = (loanDetail: LoanDetail) => {
+    if (!loanDetail.is_paid && moment().isAfter(loanDetail.payment_date))
+      return LoanModalStyles.latePayment;
+    if (
+      !loanDetail.is_paid &&
+      moment().isSame(loanDetail.payment_date, "month")
+    )
+      return LoanModalStyles.currentPayment;
+    if (loanDetail.is_paid) return LoanModalStyles.madePayment;
+  };
+
   useEffect(() => {
     if (props.open) dispatch(getLoanByAccount(account_number));
   }, [props.open]);
@@ -91,5 +109,5 @@ export const useLoanModalState = (props: LoanModalProps) => {
     }
   }, [getLoanStatus]);
 
-  return { detailSelected, loan, onClose, onPayButton, onSave };
+  return { getRowStyle, loan, onClose, onPayButton, onSave };
 };

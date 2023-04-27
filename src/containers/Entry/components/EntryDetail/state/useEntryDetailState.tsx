@@ -4,8 +4,9 @@ import { FetchStateEnum } from "../../../../../shared/enums/fetchState.enum";
 import { EntryOption } from "../../../../../store/interfaces/Entry/entry.interfaces";
 import { setOptionsValue } from "../../../../../store/actions/Entry/entry.actions";
 import { EntryTypeEnum } from "../../../../../shared/enums/entryType.enum";
+import { UseEntryDetailStateInterfaces } from "./useEntryDetailState.interfaces";
 
-export const useEntryDetailState = () => {
+export const useEntryDetailState = (): UseEntryDetailStateInterfaces => {
   const dispatch = useAppDispatch();
   const { getOptionsStatus, options } = useAppSelector((state) => ({
     ...state.entry,

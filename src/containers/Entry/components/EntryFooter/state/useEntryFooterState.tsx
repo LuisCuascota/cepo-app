@@ -12,8 +12,9 @@ import {
 } from "../../../../../store/thunks/Entry/entry.thunks";
 import { FetchStateEnum } from "../../../../../shared/enums/fetchState.enum";
 import { LoanToPay } from "../../../../../store/interfaces/Loan/loan.interfaces";
+import { UseEntryFooterState } from "./useEntryFooterState.interfaces";
 
-export const useEntryFooterState = () => {
+export const useEntryFooterState = (): UseEntryFooterState => {
   const dispatch = useAppDispatch();
   const [dateValue, setDateValue] = useState<Moment | null>(moment());
   const [totalValue, setTotalValue] = useState<number>(0);
