@@ -1,11 +1,5 @@
-import { LoanTypeEnum } from "../../../../shared/enums/loanType.enum";
+import { CreateLoanFeesParams } from "../../../../shared/utils/loan.utils";
 
 export interface SimulatorHeaderProps {
-  onSimulate: (event: SimulatorHeaderEvent) => void;
-}
-
-export interface SimulatorHeaderEvent {
-  months: number;
-  type: LoanTypeEnum;
-  value: number;
+  onSimulate: (event: CreateLoanFeesParams) => void;
 }

@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import moment, { Moment } from "moment";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 import { NewEntryDetail } from "../../../../../store/interfaces/Entry/entry.interfaces";
 import {
+  setDisableSave,
   setNewEntryAmount,
+  setNewEntryDate,
   setOptionsValue,
 } from "../../../../../store/actions/Entry/entry.actions";
 import {
   getEntryCount,
-  postNewEntry,
+  // postNewEntry,
 } from "../../../../../store/thunks/Entry/entry.thunks";
 import { FetchStateEnum } from "../../../../../shared/enums/fetchState.enum";
 import { LoanToPay } from "../../../../../store/interfaces/Loan/loan.interfaces";
@@ -16,7 +17,6 @@ import { UseEntryFooterState } from "./useEntryFooterState.interfaces";
 
 export const useEntryFooterState = (): UseEntryFooterState => {
   const dispatch = useAppDispatch();
-  const [dateValue, setDateValue] = useState<Moment | null>(moment());
   const [totalValue, setTotalValue] = useState<number>(0);
   const [saveIsLoad, setSaveIsLoad] = useState<boolean>(false);
 
@@ -27,6 +27,7 @@ export const useEntryFooterState = (): UseEntryFooterState => {
     postNewEntryStatus,
     feeLoanToPay,
     loanData,
+    disableSave,
   } = useAppSelector((state) => ({
     ...state.entry,
     ...state.loan,
@@ -47,19 +48,34 @@ export const useEntryFooterState = (): UseEntryFooterState => {
     if (loanData) {
       loanToPay = {
         feeToPay: feeLoanToPay,
-        loanNumber: loanData.loan.number,
+        loanNumber: loanData.loan.number!,
         term: loanData.loan.term,
       };
     }
 
-    dispatch(
-      postNewEntry({
-        detail: newEntryDetail,
-        header: newEntry,
-        loanToPay,
-      })
-    );
-    console.log(newEntry, newEntryDetail, feeLoanToPay);
+    // dispatch(
+    //   postNewEntry({
+    //     detail: newEntryDetail,
+    //     header: newEntry,
+    //     loanToPay,
+    //   })
+    // );
+    console.log({
+      detail: newEntryDetail,
+      header: newEntry,
+      loanToPay,
+    });
+  };
+
+  const onCancelSave = () => {
+    dispatch(getEntryCount());
+    dispatch(setOptionsValue([]));
+    dispatch(setDisableSave(true));
+    setTotalValue(0);
+  };
+
+  const onChangeDate = (date: string) => {
+    dispatch(setNewEntryDate(date));
   };
 
   useEffect(() => {
@@ -77,15 +93,16 @@ export const useEntryFooterState = (): UseEntryFooterState => {
     if (postNewEntryStatus === FetchStateEnum.SUCCESS) {
       dispatch(getEntryCount());
       dispatch(setOptionsValue([]));
+      dispatch(setDisableSave(true));
+      setTotalValue(0);
       setSaveIsLoad(false);
     }
   }, [postNewEntryStatus]);
 
   return {
-    date: {
-      setValue: setDateValue,
-      value: dateValue,
-    },
+    disableSave,
+    onCancelSave,
+    onChangeDate,
     onSave,
     saveIsLoad,
     totalValue,

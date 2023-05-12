@@ -5,25 +5,15 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
 } from "@mui/material";
 import { useLoanModalState } from "./state/useLoanModalState";
-import { LoanDetail } from "../../../store/interfaces/Loan/loan.interfaces";
-import moment from "moment";
-import { PayButton } from "./components/PayButton";
 import { LoanModalProps } from "./state/useLoanModalState.interfaces";
-import { LoanModalStyles } from "./LoanModal.styles";
+import { LoanTable } from "../../loan/loanTable/LoanTable";
+import { getFormattedDate } from "../../../shared/utils/date.utils";
 
 export const LoanModal = (props: LoanModalProps) => {
-  const { loan, onPayButton, onClose, onSave, getRowStyle } =
-    useLoanModalState(props);
+  const { loan, onPayButton, onClose, onSave } = useLoanModalState(props);
 
   return (
     <Dialog maxWidth={"xl"} open={props.open} onClose={onClose}>
@@ -34,9 +24,9 @@ export const LoanModal = (props: LoanModalProps) => {
             <Typography>{`Cod: ${loan?.loan.number}`}</Typography>
           </Grid>
           <Grid item md={3}>
-            <Typography>{`Fecha: ${moment(loan?.loan.date)
-              .format("YYYY-MM-DD")
-              .toString()}`}</Typography>
+            <Typography>{`Fecha: ${getFormattedDate(
+              loan?.loan.date
+            )}`}</Typography>
           </Grid>
           <Grid item md={3}>
             <Typography>{`Cantidad: ${loan?.loan.value}`}</Typography>
@@ -45,49 +35,11 @@ export const LoanModal = (props: LoanModalProps) => {
             <Typography>{`Meses: ${loan?.loan.term}`}</Typography>
           </Grid>
         </Grid>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell align="right">{"Cuota"}</TableCell>
-                <TableCell align="right">{"Fecha de Pago"}</TableCell>
-                <TableCell align="right">{"Cuota Capital"}</TableCell>
-                <TableCell align="right">{"Interes"}</TableCell>
-                <TableCell align="right">{"Total a Pagar"}</TableCell>
-                <TableCell align="right">{"Saldo"}</TableCell>
-                <TableCell align="right">{"Acción"}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {loan?.detail.map((loanDetail: LoanDetail) => (
-                <TableRow
-                  key={loanDetail.fee_number}
-                  sx={getRowStyle(loanDetail)}
-                >
-                  <TableCell>{loanDetail.fee_number}</TableCell>
-                  <TableCell>
-                    {moment(loanDetail.payment_date)
-                      .format("YYYY-MM-DD")
-                      .toString()}
-                  </TableCell>
-                  <TableCell>{loanDetail.fee_value}</TableCell>
-                  <TableCell>{loanDetail.interest}</TableCell>
-                  <TableCell>{loanDetail.fee_total}</TableCell>
-                  <TableCell>{loanDetail.balance_after_pay}</TableCell>
-                  <TableCell>
-                    {!loanDetail.is_paid && (
-                      <PayButton
-                        loanDetail={loanDetail}
-                        loan={loan?.loan}
-                        onPayAction={onPayButton}
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <LoanTable
+          loanDetail={loan?.detail!}
+          onPayButton={onPayButton}
+          withActions={true}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>{"Cerrar"}</Button>

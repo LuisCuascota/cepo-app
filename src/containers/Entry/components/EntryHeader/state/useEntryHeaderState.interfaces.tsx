@@ -1,16 +1,8 @@
-import { ChangeEvent, SyntheticEvent } from "react";
-
-export interface SelectorPerson {
-  label: string;
-  id: number;
-}
+import { ChangeEvent } from "react";
 
 export interface HeaderState {
   entryCount: number;
-  personList: SelectorPerson[];
   onChangePaymentMethod: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeSelector: (
-    _event: SyntheticEvent,
-    value: SelectorPerson | null
-  ) => void;
+  onChangeSelector: (id: number) => void;
+  disableSearch: boolean;
 }

@@ -40,4 +40,6 @@ export interface EntryState {
   getEntryCountStatus: FetchStateEnum;
   newEntry: NewEntry;
   postNewEntryStatus: FetchStateEnum;
+  disableSave: boolean;
+  disableSearch: boolean;
 }

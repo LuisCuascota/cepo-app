@@ -23,7 +23,7 @@ export const useSimulatorHeaderState = (props: SimulatorHeaderProps) => {
   };
 
   const onSimulate = () => {
-    props.onSimulate({ months, type, value });
+    props.onSimulate({ months, type, value, withTotals: true });
   };
 
   return { onChangeLoanType, onChangeMonths, onChangeValue, onSimulate };

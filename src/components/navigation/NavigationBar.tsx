@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
+import { RoutesEnum } from "../../shared/enums/routes.enum";
 
 interface navPages {
   title: string;
@@ -18,8 +19,9 @@ interface navPages {
 }
 
 const pages: navPages[] = [
-  { link: "/entry", title: "Ingresos" },
-  { link: "/simulator", title: "Simulador" },
+  { link: RoutesEnum.ENTRY, title: "Ingresos" },
+  { link: RoutesEnum.SIMULATOR, title: "Simulador" },
+  { link: RoutesEnum.LOAN, title: "Crédito" },
 ];
 
 export const NavigationBar = () => {

@@ -7,4 +7,6 @@ export const {
   setNewEntryIsTransfer,
   setNewEntryNumber,
   setOptionsValue,
+  setDisableSave,
+  setDisableSearch,
 } = entrySlice.actions;

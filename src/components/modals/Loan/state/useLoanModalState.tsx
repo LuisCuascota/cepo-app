@@ -8,14 +8,15 @@ import {
   LoanResponse,
 } from "../../../../store/interfaces/Loan/loan.interfaces";
 import { EntryTypeEnum } from "../../../../shared/enums/entryType.enum";
-import { setOptionsValue } from "../../../../store/actions/Entry/entry.actions";
+import {
+  setDisableSave,
+  setOptionsValue,
+} from "../../../../store/actions/Entry/entry.actions";
 import { setFeeLoanToPay } from "../../../../store/actions/Loan/loan.actions";
 import {
   LoanModalProps,
   useLoanModalStateProps,
 } from "./useLoanModalState.interfaces";
-import moment from "moment";
-import { LoanModalStyles } from "../LoanModal.styles";
 
 export const useLoanModalState = (
   props: LoanModalProps
@@ -57,7 +58,7 @@ export const useLoanModalState = (
           loanDetail.fee_number * loanDetail.fee_value
         ).toFixed(2),
         entry: number,
-        id: loanDetail.id,
+        id: loanDetail.id!,
       });
     });
 
@@ -82,21 +83,11 @@ export const useLoanModalState = (
       }
     });
 
+    dispatch(setDisableSave(false));
     dispatch(setOptionsValue(updatedOptions));
     dispatch(setFeeLoanToPay(feeToPay));
     setDetailSelected([]);
     props.handleClose();
-  };
-
-  const getRowStyle = (loanDetail: LoanDetail) => {
-    if (!loanDetail.is_paid && moment().isAfter(loanDetail.payment_date))
-      return LoanModalStyles.latePayment;
-    if (
-      !loanDetail.is_paid &&
-      moment().isSame(loanDetail.payment_date, "month")
-    )
-      return LoanModalStyles.currentPayment;
-    if (loanDetail.is_paid) return LoanModalStyles.madePayment;
   };
 
   useEffect(() => {
@@ -109,5 +100,5 @@ export const useLoanModalState = (
     }
   }, [getLoanStatus]);
 
-  return { getRowStyle, loan, onClose, onPayButton, onSave };
+  return { loan, onClose, onPayButton, onSave };
 };

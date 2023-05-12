@@ -8,7 +8,6 @@ export interface useLoanModalStateProps {
   onClose: () => void;
   onPayButton: (loanDetail: LoanDetail) => void;
   onSave: () => void;
-  getRowStyle: (loanDetail: LoanDetail) => any;
 }
 
 export interface LoanModalProps {

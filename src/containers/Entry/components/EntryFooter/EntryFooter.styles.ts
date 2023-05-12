@@ -1,6 +1,9 @@
 import { CustomStyles } from "../../../../shared/interfaces/CustomStyles";
 
 export const EntryFooterStyles: CustomStyles = {
+  buttonCancel: {
+    marginRight: "10px",
+  },
   buttonContent: {
     display: "flex",
     justifyContent: "flex-end",

@@ -17,8 +17,8 @@ export const SimulatorHeader = (props: SimulatorHeaderProps) => {
     useSimulatorHeaderState(props);
 
   return (
-    <Grid container spacing={1}>
-      <Grid item md={12}>
+    <Grid container spacing={1} margin={1}>
+      <Grid item md={12} textAlign={"center"}>
         <Typography>{"Simulador de Crédito"}</Typography>
       </Grid>
       <Grid item md={3}>
@@ -39,7 +39,6 @@ export const SimulatorHeader = (props: SimulatorHeaderProps) => {
           onChange={onChangeMonths}
         />
       </Grid>
-
       <Grid item md={3}>
         <Typography>{"Tipo de Cuota"}</Typography>
         <RadioGroup

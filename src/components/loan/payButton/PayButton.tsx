@@ -1,13 +1,9 @@
 import { Button } from "@mui/material";
-import {
-  Loan,
-  LoanDetail,
-} from "../../../../store/interfaces/Loan/loan.interfaces";
+import { LoanDetail } from "../../../store/interfaces/Loan/loan.interfaces";
 import { useState } from "react";
 
 export interface PayButtonProps {
   loanDetail: LoanDetail;
-  loan: Loan;
   onPayAction: (detail: LoanDetail) => void;
 }
 

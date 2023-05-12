@@ -1,19 +1,18 @@
 import {
-  Autocomplete,
   Box,
   FormControlLabel,
   Grid,
   Radio,
   RadioGroup,
-  TextField,
   Typography,
 } from "@mui/material";
 import { useEntryHeaderState } from "./state/useEntryHeaderState";
 import { EntryHeaderStyles } from "./EntryHeader.styles";
 import { PaymentMethodEnum } from "../../../../shared/enums/paymentMethod.enum";
+import { PersonSearch } from "../../../../components/search/personSearch/PersonSearch";
 
 export const EntryHeader = () => {
-  const { entryCount, onChangePaymentMethod, onChangeSelector, personList } =
+  const { entryCount, onChangePaymentMethod, onChangeSelector, disableSearch } =
     useEntryHeaderState();
 
   return (
@@ -49,12 +48,9 @@ export const EntryHeader = () => {
         <Typography>{"Recibí de:"}</Typography>
       </Grid>
       <Grid item md={7}>
-        <Autocomplete
-          options={personList}
-          renderInput={(params) => (
-            <TextField {...params} size={"small"} label={"Socio"} />
-          )}
-          onChange={onChangeSelector}
+        <PersonSearch
+          disableSearch={disableSearch}
+          onChangeSelector={onChangeSelector}
         />
       </Grid>
     </Grid>

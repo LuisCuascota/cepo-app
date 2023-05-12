@@ -9,16 +9,18 @@ import {
   postNewEntry,
 } from "../../thunks/Entry/entry.thunks";
 import { FetchStateEnum } from "../../../shared/enums/fetchState.enum";
-import moment from "moment";
+import { getFormattedDate } from "../../../shared/utils/date.utils";
 
 export const initialState: EntryState = {
   count: 0,
+  disableSave: true,
+  disableSearch: false,
   getEntryCountStatus: FetchStateEnum.PENDING,
   getOptionsStatus: FetchStateEnum.PENDING,
   newEntry: {
     account_number: 0,
     amount: 0,
-    date: moment().format("YYYY-MM-DD"),
+    date: getFormattedDate(),
     is_transfer: false,
     number: 0,
     place: "Loreto",
@@ -62,6 +64,12 @@ export const entrySlice = createSlice({
   initialState,
   name: "entry",
   reducers: {
+    setDisableSave(state, action: { payload: boolean }) {
+      state.disableSave = action.payload;
+    },
+    setDisableSearch(state, action: { payload: boolean }) {
+      state.disableSearch = action.payload;
+    },
     setNewEntryAccount(state, action: { payload: number }) {
       state.newEntry.account_number = action.payload;
     },
