@@ -8,21 +8,18 @@ import {
 } from "../../../../../store/actions/Entry/entry.actions";
 import { EntryTypeEnum } from "../../../../../shared/enums/entryType.enum";
 import { UseEntryDetailStateInterfaces } from "./useEntryDetailState.interfaces";
+import { selectEntry } from "../../../../../store/selectors/selectors";
 
 export const useEntryDetailState = (): UseEntryDetailStateInterfaces => {
   const dispatch = useAppDispatch();
-  const { getOptionsStatus, options } = useAppSelector((state) => ({
-    ...state.entry,
-  }));
+  const { getOptionsStatus, options } = useAppSelector(selectEntry);
   const [entryOptions, setEntryOptions] = useState<EntryOption[]>([]);
   const [isOpenLoanModal, setOpenLoanModal] = useState<boolean>(false);
 
   const onItemChange = (event: ChangeEvent<HTMLInputElement>) => {
     const updatedOptions: EntryOption[] = options.map(
       (option: EntryOption) => ({
-        description: option.description,
-        id: option.id,
-        showDetails: option.showDetails,
+        ...option,
         value:
           option.id.toString() === event.target.id
             ? +event.target.value

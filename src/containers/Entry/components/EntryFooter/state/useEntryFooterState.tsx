@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
-import { NewEntryDetail } from "../../../../../store/interfaces/Entry/entry.interfaces";
+import {
+  EntryDetail,
+  EntryRow,
+  NewEntryDetail,
+} from "../../../../../store/interfaces/Entry/entry.interfaces";
 import {
   setDisableSave,
   setNewEntryAmount,
@@ -9,36 +13,58 @@ import {
 } from "../../../../../store/actions/Entry/entry.actions";
 import {
   getEntryCount,
-  // postNewEntry,
+  postNewEntry,
 } from "../../../../../store/thunks/Entry/entry.thunks";
 import { FetchStateEnum } from "../../../../../shared/enums/fetchState.enum";
 import { LoanToPay } from "../../../../../store/interfaces/Loan/loan.interfaces";
 import { UseEntryFooterState } from "./useEntryFooterState.interfaces";
+import {
+  selectEntry,
+  selectLoan,
+  selectPerson,
+} from "../../../../../store/selectors/selectors";
+import { buildDoc } from "../../../../../shared/utils/buildDoc.utils";
 
 export const useEntryFooterState = (): UseEntryFooterState => {
   const dispatch = useAppDispatch();
   const [totalValue, setTotalValue] = useState<number>(0);
   const [saveIsLoad, setSaveIsLoad] = useState<boolean>(false);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const { options, newEntry, postNewEntryStatus, disableSave } =
+    useAppSelector(selectEntry);
+  const { persons } = useAppSelector(selectPerson);
+  const { feeLoanToPay, loanData } = useAppSelector(selectLoan);
 
-  const {
-    options,
-    newEntry,
-    count,
-    postNewEntryStatus,
-    feeLoanToPay,
-    loanData,
-    disableSave,
-  } = useAppSelector((state) => ({
-    ...state.entry,
-    ...state.loan,
-  }));
+  const buildEntryDoc = () => {
+    const personData = persons.find(
+      (person) => person.number === newEntry.account_number
+    );
+
+    const entryDocHead: EntryRow = {
+      account_number: newEntry.account_number,
+      amount: newEntry.amount,
+      date: newEntry.date,
+      is_transfer: newEntry.is_transfer,
+      names: personData!.names,
+      number: newEntry.number,
+      place: newEntry.place,
+      surnames: personData!.surnames,
+    };
+
+    const entryDocDetail: EntryDetail[] = options.map((option) => ({
+      description: option.description,
+      value: option.value,
+    }));
+
+    buildDoc(entryDocHead, entryDocDetail);
+  };
 
   const onSave = () => {
     setSaveIsLoad(true);
     const newEntryDetail: NewEntryDetail[] = options
       .filter((option) => option.value && option.value > 0)
       .map((option) => ({
-        entry_number: count,
+        entry_number: newEntry.number,
         type_id: option.id,
         value: option.value,
       }));
@@ -53,13 +79,13 @@ export const useEntryFooterState = (): UseEntryFooterState => {
       };
     }
 
-    // dispatch(
-    //   postNewEntry({
-    //     detail: newEntryDetail,
-    //     header: newEntry,
-    //     loanToPay,
-    //   })
-    // );
+    dispatch(
+      postNewEntry({
+        detail: newEntryDetail,
+        header: newEntry,
+        loanToPay,
+      })
+    );
     console.log({
       detail: newEntryDetail,
       header: newEntry,
@@ -78,6 +104,20 @@ export const useEntryFooterState = (): UseEntryFooterState => {
     dispatch(setNewEntryDate(date));
   };
 
+  const handleClose = () => {
+    dispatch(getEntryCount());
+    dispatch(setOptionsValue([]));
+    dispatch(setDisableSave(true));
+    setTotalValue(0);
+    setSaveIsLoad(false);
+    setOpenDialog(false);
+  };
+
+  const handlePrint = () => {
+    buildEntryDoc();
+    handleClose();
+  };
+
   useEffect(() => {
     if (options.length > 0) {
       const sum = options
@@ -91,15 +131,16 @@ export const useEntryFooterState = (): UseEntryFooterState => {
 
   useEffect(() => {
     if (postNewEntryStatus === FetchStateEnum.SUCCESS) {
-      dispatch(getEntryCount());
-      dispatch(setOptionsValue([]));
-      dispatch(setDisableSave(true));
-      setTotalValue(0);
-      setSaveIsLoad(false);
+      setOpenDialog(true);
     }
   }, [postNewEntryStatus]);
 
   return {
+    dialog: {
+      handleClose,
+      handlePrint,
+      open: openDialog,
+    },
     disableSave,
     onCancelSave,
     onChangeDate,

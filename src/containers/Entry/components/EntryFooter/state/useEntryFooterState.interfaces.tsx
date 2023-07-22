@@ -5,4 +5,9 @@ export interface UseEntryFooterState {
   onChangeDate: (date: string) => void;
   disableSave: boolean;
   onCancelSave: () => void;
+  dialog: {
+    open: boolean;
+    handleClose: () => void;
+    handlePrint: () => void;
+  };
 }

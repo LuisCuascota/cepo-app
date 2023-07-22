@@ -5,7 +5,9 @@ import {
 } from "../../interfaces/Entry/entry.interfaces";
 import {
   getEntryCount,
+  getEntryDetailByNumber,
   getEntryOptionList,
+  getEntryRowsPaginated,
   postNewEntry,
 } from "../../thunks/Entry/entry.thunks";
 import { FetchStateEnum } from "../../../shared/enums/fetchState.enum";
@@ -15,7 +17,11 @@ export const initialState: EntryState = {
   count: 0,
   disableSave: true,
   disableSearch: false,
+  entryRowDetail: [],
+  entryRows: [],
   getEntryCountStatus: FetchStateEnum.PENDING,
+  getEntryDetailStatus: FetchStateEnum.PENDING,
+  getEntryRowsStatus: FetchStateEnum.PENDING,
   getOptionsStatus: FetchStateEnum.PENDING,
   newEntry: {
     account_number: 0,
@@ -59,6 +65,26 @@ export const entrySlice = createSlice({
     });
     builder.addCase(postNewEntry.rejected, (state) => {
       state.postNewEntryStatus = FetchStateEnum.FAILED;
+    });
+    builder.addCase(getEntryRowsPaginated.rejected, (state) => {
+      state.getEntryRowsStatus = FetchStateEnum.FAILED;
+    });
+    builder.addCase(getEntryRowsPaginated.pending, (state: EntryState) => {
+      state.getEntryRowsStatus = FetchStateEnum.PENDING;
+    });
+    builder.addCase(getEntryRowsPaginated.fulfilled, (state, { payload }) => {
+      state.getEntryRowsStatus = FetchStateEnum.SUCCESS;
+      state.entryRows = payload;
+    });
+    builder.addCase(getEntryDetailByNumber.rejected, (state) => {
+      state.getEntryDetailStatus = FetchStateEnum.FAILED;
+    });
+    builder.addCase(getEntryDetailByNumber.pending, (state: EntryState) => {
+      state.getEntryDetailStatus = FetchStateEnum.PENDING;
+    });
+    builder.addCase(getEntryDetailByNumber.fulfilled, (state, { payload }) => {
+      state.getEntryDetailStatus = FetchStateEnum.SUCCESS;
+      state.entryRowDetail = payload;
     });
   },
   initialState,

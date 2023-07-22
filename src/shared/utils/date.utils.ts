@@ -8,6 +8,9 @@ export const getFistSaturday = (date: Moment): string => {
 };
 
 export const getFormattedDate = (date?: string): string => {
-  if (date) return moment(date).format("YYYY-MM-DD").toString();
-  else return moment().format("YYYY-MM-DD").toString();
+  if (date) {
+    return moment(date).isValid()
+      ? moment(date).format("YYYY-MM-DD").toString()
+      : date;
+  } else return moment().format("YYYY-MM-DD").toString();
 };

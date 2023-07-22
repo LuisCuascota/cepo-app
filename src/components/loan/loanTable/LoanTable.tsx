@@ -56,9 +56,7 @@ export const LoanTable = (props: LoanTableProps) => {
               >
                 <TableCell>{loanDetail.fee_number}</TableCell>
                 <TableCell>
-                  {moment(loanDetail.payment_date).isValid()
-                    ? getFormattedDate(loanDetail.payment_date)
-                    : loanDetail.payment_date}
+                  {getFormattedDate(loanDetail.payment_date)}
                 </TableCell>
                 <TableCell>{loanDetail.fee_value}</TableCell>
                 <TableCell>{loanDetail.interest}</TableCell>

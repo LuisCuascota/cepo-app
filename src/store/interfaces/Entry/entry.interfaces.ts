@@ -1,11 +1,33 @@
 import { FetchStateEnum } from "../../../shared/enums/fetchState.enum";
-import { FeeLoanToPay, LoanToPay } from "../Loan/loan.interfaces";
+import { LoanToPay } from "../Loan/loan.interfaces";
 
 export interface EntryOption {
   id: number;
   description: string;
   value: number;
   showDetails: boolean;
+}
+
+export interface EntryRow {
+  number: number;
+  names: string;
+  surnames: string;
+  date: string;
+  amount: number;
+  is_transfer: boolean;
+  place: string;
+  account_number: number;
+}
+
+export interface EntryPagination {
+  limit: number;
+  offset: number;
+  account?: number;
+}
+
+export interface EntryDetail {
+  description: string;
+  value?: number;
 }
 
 export interface EntryCount {
@@ -42,4 +64,8 @@ export interface EntryState {
   postNewEntryStatus: FetchStateEnum;
   disableSave: boolean;
   disableSearch: boolean;
+  getEntryRowsStatus: FetchStateEnum;
+  entryRows: EntryRow[];
+  getEntryDetailStatus: FetchStateEnum;
+  entryRowDetail: EntryDetail[];
 }

@@ -14,13 +14,13 @@ import {
   setNewEntryNumber,
 } from "../../../../../store/actions/Entry/entry.actions";
 import { PaymentMethodEnum } from "../../../../../shared/enums/paymentMethod.enum";
+import { selectEntry } from "../../../../../store/selectors/selectors";
 
 export const useEntryHeaderState = (): HeaderState => {
   const dispatch = useAppDispatch();
   const [entryCount, setEntryCount] = useState<number>(0);
-  const {
-    entry: { getEntryCountStatus, count, disableSearch },
-  } = useAppSelector((state) => state);
+  const { getEntryCountStatus, count, disableSearch } =
+    useAppSelector(selectEntry);
 
   const onChangePaymentMethod = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === PaymentMethodEnum.CASH)

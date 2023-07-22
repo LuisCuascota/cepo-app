@@ -30,7 +30,6 @@ export interface LoanResponse {
 
 export interface FeeLoanToPay {
   id: number;
-  balance: number;
   entry: number;
 }
 

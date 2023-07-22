@@ -17,6 +17,7 @@ import {
   LoanModalProps,
   useLoanModalStateProps,
 } from "./useLoanModalState.interfaces";
+import { selectEntry, selectLoan } from "../../../../store/selectors/selectors";
 
 export const useLoanModalState = (
   props: LoanModalProps
@@ -26,13 +27,9 @@ export const useLoanModalState = (
   const [detailSelected, setDetailSelected] = useState<LoanDetail[]>([]);
   const {
     newEntry: { account_number, number },
-    getLoanStatus,
-    loanData,
     options,
-  } = useAppSelector((state) => ({
-    ...state.entry,
-    ...state.loan,
-  }));
+  } = useAppSelector(selectEntry);
+  const { getLoanStatus, loanData } = useAppSelector(selectLoan);
 
   const onPayButton = (loanDetail: LoanDetail) => {
     detailSelected.push(loanDetail);
@@ -53,10 +50,6 @@ export const useLoanModalState = (
       totalFee += loanDetail.fee_value;
       totalInterest += loanDetail.interest;
       feeToPay.push({
-        balance: +(
-          loanData!.loan.value -
-          loanDetail.fee_number * loanDetail.fee_value
-        ).toFixed(2),
         entry: number,
         id: loanDetail.id!,
       });
@@ -66,16 +59,12 @@ export const useLoanModalState = (
       switch (option.id) {
         case EntryTypeEnum.loanFee:
           return {
-            description: option.description,
-            id: option.id,
-            showDetails: option.showDetails,
+            ...option,
             value: totalFee,
           };
         case EntryTypeEnum.loanInterest:
           return {
-            description: option.description,
-            id: option.id,
-            showDetails: option.showDetails,
+            ...option,
             value: totalInterest,
           };
         default:

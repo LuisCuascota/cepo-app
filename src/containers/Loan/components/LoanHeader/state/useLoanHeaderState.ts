@@ -7,12 +7,11 @@ import { createLoanFees } from "../../../../../shared/utils/loan.utils";
 import { getFormattedDate } from "../../../../../shared/utils/date.utils";
 import { FetchStateEnum } from "../../../../../shared/enums/fetchState.enum";
 import { getLoanCount } from "../../../../../store/thunks/Loan/loan.thunks";
+import { selectLoan } from "../../../../../store/selectors/selectors";
 
 export const useLoanHeaderState = (props: LoanHeaderProps) => {
   const dispatch = useAppDispatch();
-  const {
-    loan: { postNewLoanStatus, count },
-  } = useAppSelector((state) => state);
+  const { postNewLoanStatus, count } = useAppSelector(selectLoan);
   const [months, setMonths] = useState<number>(0);
   const [type, setType] = useState<LoanTypeEnum>(LoanTypeEnum.FIXED_FEE);
   const [value, setValue] = useState<number>(0);
@@ -66,7 +65,10 @@ export const useLoanHeaderState = (props: LoanHeaderProps) => {
   }, []);
 
   useEffect(() => {
-    if (postNewLoanStatus === FetchStateEnum.SUCCESS) props.onCalculate([]);
+    if (postNewLoanStatus === FetchStateEnum.SUCCESS) {
+      props.onCalculate([]);
+      dispatch(getLoanCount());
+    }
   }, [postNewLoanStatus]);
 
   return {

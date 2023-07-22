@@ -2,7 +2,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Routes } from "../../../shared/api/routes";
 import {
   EntryCount,
+  EntryDetail,
   EntryOption,
+  EntryPagination,
+  EntryRow,
   NewEntryComplete,
 } from "../../interfaces/Entry/entry.interfaces";
 import axios from "../../../shared/api/axios-util";
@@ -30,7 +33,27 @@ export const getEntryCount = createAsyncThunk<EntryCount>(
 export const postNewEntry = createAsyncThunk<string, NewEntryComplete>(
   "entry/new",
   async (payload: NewEntryComplete) => {
-    const response = await axios.post(Routes.POST_NEW_ENTRY, payload);
+    const response = await axios.post(Routes.ENTRY, payload);
+
+    return response.data;
+  }
+);
+
+export const getEntryRowsPaginated = createAsyncThunk<
+  EntryRow[],
+  EntryPagination
+>("entry/rows", async (pagination: EntryPagination) => {
+  const response = await axios.get(`${Routes.ENTRY}`, {
+    params: pagination,
+  });
+
+  return response.data;
+});
+
+export const getEntryDetailByNumber = createAsyncThunk<EntryDetail[], number>(
+  "entry/detail",
+  async (number: number) => {
+    const response = await axios.get(`${Routes.ENTRY_DETAIL}/${number}`);
 
     return response.data;
   }

@@ -1,6 +1,11 @@
 import {
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   InputAdornment,
   TextField,
   Typography,
@@ -19,10 +24,23 @@ export const EntryFooter = () => {
     totalValue,
     disableSave,
     onCancelSave,
+    dialog,
   } = useEntryFooterState();
 
   return (
     <>
+      <Dialog open={dialog.open} onClose={dialog.handleClose}>
+        <DialogTitle>{"Ingreso guardado correctamente"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {"Desea Imprimir el comprobante?"}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={dialog.handlePrint}>{"Imprimir"}</Button>
+          <Button onClick={dialog.handleClose}> {"Cerrar"}</Button>
+        </DialogActions>
+      </Dialog>
       <Box sx={EntryFooterStyles.content}>
         <Box display={"flex"}>
           <Typography sx={EntryFooterStyles.labelText}>{"Fecha: "}</Typography>

@@ -15,7 +15,6 @@ export const useLoanState = () => {
   };
 
   const onSaveLoan = (loan: Loan) => {
-    console.log({ detail: loanFees, loan });
     dispatch(postNewLoan({ detail: loanFees, loan }));
   };
 

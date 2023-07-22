@@ -22,6 +22,7 @@ const pages: navPages[] = [
   { link: RoutesEnum.ENTRY, title: "Ingresos" },
   { link: RoutesEnum.SIMULATOR, title: "Simulador" },
   { link: RoutesEnum.LOAN, title: "Crédito" },
+  { link: RoutesEnum.VIEW_ENTRY, title: "Buscar Ingreso" },
 ];
 
 export const NavigationBar = () => {
