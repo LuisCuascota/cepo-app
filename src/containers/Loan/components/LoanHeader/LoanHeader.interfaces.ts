@@ -5,5 +5,5 @@ import {
 
 export interface LoanHeaderProps {
   onCalculate: (detail: LoanDetail[]) => void;
-  onSaveLoan: (detail: Loan) => void;
+  onSaveLoan: (detail: Loan) => LoanDetail[];
 }

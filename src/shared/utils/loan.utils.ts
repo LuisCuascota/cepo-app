@@ -11,9 +11,12 @@ export interface CreateLoanFeesParams {
   loanNumber?: number;
 }
 
-export const createLoanFees = (event: CreateLoanFeesParams): LoanDetail[] => {
+export const createLoanFees = (
+  event: CreateLoanFeesParams,
+  date?: string
+): LoanDetail[] => {
   const loanFees: LoanDetail[] = [];
-  const paymentDate = moment();
+  const paymentDate = date ? moment(date) : moment();
   const feeLoanValue = (event.value / event.months).toFixed(2);
   let feeValue = event.value;
   let interest = 0;

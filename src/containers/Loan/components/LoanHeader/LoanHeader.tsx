@@ -1,4 +1,10 @@
 import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControlLabel,
   Grid,
   Radio,
@@ -26,10 +32,21 @@ export const LoanHeader = (props: LoanHeaderProps) => {
     onSelectGuarantor1,
     onSelectGuarantor2,
     onSelectPerson,
+    dialog,
   } = useLoanHeaderState(props);
 
   return (
     <Grid container spacing={1} margin={1}>
+      <Dialog open={dialog.open} onClose={dialog.handleClose}>
+        <DialogTitle>{"Credito guardado correctamente"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{"Desea Imprimir la tabla?"}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={dialog.handlePrint}>{"Imprimir"}</Button>
+          <Button onClick={dialog.handleClose}> {"Cerrar"}</Button>
+        </DialogActions>
+      </Dialog>
       <Grid item md={12} textAlign={"center"}>
         <Typography>{`Creación de Crédito N${count}`}</Typography>
       </Grid>

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { selectEntry } from "../../../../store/selectors/selectors";
 import { getEntryDetailByNumber } from "../../../../store/thunks/Entry/entry.thunks";
 import { FetchStateEnum } from "../../../../shared/enums/fetchState.enum";
-import { buildDoc } from "../../../../shared/utils/buildDoc.utils";
+import { buildEntryPDFDoc } from "../../../../shared/utils/buildEntryDoc.utils";
 
 export const useEntryModalState = (props: EntryModalProps) => {
   const dispatch = useAppDispatch();
@@ -12,7 +12,7 @@ export const useEntryModalState = (props: EntryModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleBuildDoc = () => {
-    if (props.entryData) buildDoc(props.entryData, entryRowDetail);
+    if (props.entryData) buildEntryPDFDoc(props.entryData, entryRowDetail);
   };
 
   useEffect(() => {

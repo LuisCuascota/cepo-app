@@ -9,6 +9,7 @@ export interface Loan {
   rate: number;
   guarantor1_account: number;
   guarantor2_account: number;
+  names?: string;
 }
 
 export interface LoanDetail {

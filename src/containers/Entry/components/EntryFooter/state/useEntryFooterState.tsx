@@ -23,7 +23,8 @@ import {
   selectLoan,
   selectPerson,
 } from "../../../../../store/selectors/selectors";
-import { buildDoc } from "../../../../../shared/utils/buildDoc.utils";
+import { buildEntryPDFDoc } from "../../../../../shared/utils/buildEntryDoc.utils";
+import { setFeeLoanToPay } from "../../../../../store/actions/Loan/loan.actions";
 
 export const useEntryFooterState = (): UseEntryFooterState => {
   const dispatch = useAppDispatch();
@@ -56,7 +57,7 @@ export const useEntryFooterState = (): UseEntryFooterState => {
       value: option.value,
     }));
 
-    buildDoc(entryDocHead, entryDocDetail);
+    buildEntryPDFDoc(entryDocHead, entryDocDetail);
   };
 
   const onSave = () => {
@@ -97,6 +98,8 @@ export const useEntryFooterState = (): UseEntryFooterState => {
     dispatch(getEntryCount());
     dispatch(setOptionsValue([]));
     dispatch(setDisableSave(true));
+    dispatch(setFeeLoanToPay([]));
+
     setTotalValue(0);
   };
 
@@ -108,6 +111,8 @@ export const useEntryFooterState = (): UseEntryFooterState => {
     dispatch(getEntryCount());
     dispatch(setOptionsValue([]));
     dispatch(setDisableSave(true));
+    dispatch(setFeeLoanToPay([]));
+
     setTotalValue(0);
     setSaveIsLoad(false);
     setOpenDialog(false);

@@ -6,36 +6,13 @@ import {
 } from "../../store/interfaces/Entry/entry.interfaces";
 import Logo from "../../assets/caja_logo.png";
 import { getFormattedDate } from "./date.utils";
-
-enum FontEnum {
-  HELVETICA = "helvetica",
-  TIMES = "times",
-}
-
-enum FontStyleEnum {
-  NORMAL = "normal",
-  BOLD = "bold",
-  ITALIC = "italic",
-}
-
-enum FontColorEnum {
-  RED = "red",
-  BLACK = "black",
-}
-
-const getCenter = (multiplicity: number): number => 297 / multiplicity;
-
-const setText = (
-  doc: jsPDF,
-  font: FontEnum = FontEnum.HELVETICA,
-  style: FontStyleEnum = FontStyleEnum.NORMAL,
-  size: number = 12,
-  color: FontColorEnum = FontColorEnum.BLACK
-) => {
-  doc.setFont(font, style);
-  doc.setTextColor(color);
-  doc.setFontSize(size);
-};
+import {
+  FontColorEnum,
+  FontEnum,
+  FontStyleEnum,
+  getCenter,
+  setText,
+} from "./pdf.utils";
 
 const buildDocHeader = (doc: jsPDF, entryHead: EntryRow, stX: number) => {
   doc.addImage(Logo, "PNG", stX, 5, 20, 20);
@@ -43,7 +20,7 @@ const buildDocHeader = (doc: jsPDF, entryHead: EntryRow, stX: number) => {
   setText(doc, FontEnum.HELVETICA, FontStyleEnum.BOLD, 16);
   doc.text(
     "CAJA COMUNAL CEPO DE ORO",
-    stX + getCenter(4),
+    stX + getCenter(4, "H"),
     15,
     undefined,
     "center"
@@ -51,7 +28,7 @@ const buildDocHeader = (doc: jsPDF, entryHead: EntryRow, stX: number) => {
   setText(doc, FontEnum.TIMES, FontStyleEnum.ITALIC, 16);
   doc.text(
     "Sembrando para el futuro",
-    stX + getCenter(4),
+    stX + getCenter(4, "H"),
     20,
     undefined,
     "center"
@@ -124,7 +101,7 @@ const buildDocFooter = (doc: jsPDF) => {
 
 const buildDocComplements = (doc: jsPDF) => {
   doc.setLineDashPattern([2, 2], 1);
-  doc.line(getCenter(2), 0, getCenter(2), 210);
+  doc.line(getCenter(2, "H"), 0, getCenter(2, "H"), 210);
 
   doc.setTextColor(150);
   doc.setFontSize(140);
@@ -132,14 +109,17 @@ const buildDocComplements = (doc: jsPDF) => {
   doc.text("COPIA", 180, 160, undefined, 45);
 };
 
-export const buildDoc = (entryHead: EntryRow, entryDetail: EntryDetail[]) => {
+export const buildEntryPDFDoc = (
+  entryHead: EntryRow,
+  entryDetail: EntryDetail[]
+) => {
   const doc = new jsPDF("l", "mm", "A4");
   const stX = 10;
 
   buildDocHeader(doc, entryHead, stX);
-  buildDocHeader(doc, entryHead, getCenter(2) + stX);
+  buildDocHeader(doc, entryHead, getCenter(2, "H") + stX);
   buildDocTable(doc, entryHead, entryDetail, stX);
-  buildDocTable(doc, entryHead, entryDetail, getCenter(2) + stX);
+  buildDocTable(doc, entryHead, entryDetail, getCenter(2, "H") + stX);
   buildDocFooter(doc);
   buildDocComplements(doc);
 

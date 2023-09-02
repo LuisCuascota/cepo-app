@@ -3,4 +3,5 @@ export enum RoutesEnum {
   SIMULATOR = "/simulator",
   LOAN = "/loan",
   VIEW_ENTRY = "/view/entry",
+  VIEW_LOAN = "/view/loan",
 }
